@@ -1,0 +1,7 @@
+.pageContent {
+    width: 100%;
+    max-width: 600px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}

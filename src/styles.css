@@ -1,1 +1,103 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/core/theming/prebuilt/deeppurple-amber.css';
+
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: Roboto,Helvetica Neue Light,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+}
+
+html, body, md-sidenav-container {
+    height: 100%;
+}
+
+.mat-sidenav-focus-trap>.cdk-focus-trap-content {
+    overflow: hidden;
+}
+
+nav .mat-tab-links {
+    display: block;
+    text-align: center;
+}
+
+nav .mat-tab-links .mat-tab-link {
+    display: inline-block;
+}
+
+*[hidden] {
+    display: none;
+}
+
+md-card[hidden] {
+    display: none;
+}
+
+md-card.login-method {
+    text-align: center;
+}
+
+md-card-content {
+    position: relative;
+}
+
+md-card.login-method md-card-content {
+    min-height:400px;
+}
+
+md-card-content img {
+    position: relative;
+}
+
+md-card.login-method {
+    min-height: 400px;
+}
+
+md-card.login-method md-icon {
+    position: absolute;
+    width: 250px;
+    left: 50%;
+    transform:translate(-50%);
+    font-size:250px;
+    z-index: 0;
+    opacity: 0.3;
+    cursor: pointer;
+    z-index: 0;
+}
+
+md-card.login-method md-icon.small {
+    transform:none;
+    font-size:50px;
+    left: 0;
+    width: 50px;
+    opacity: 1;
+    z-index: 2;
+}
+
+.camera-snapshot, .image-picker {
+    cursor: pointer;
+}
+
+.buttons {
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+}
+
+md-input-container {
+    width: 100%;
+}
+
+a[md-tab-link].active {
+    background-color: rgba(0,0,0,0.1);
+}
+
+md-card {
+    margin-top: 20px;
+}
+
+md-card img, video {
+    max-width: 100%;
+    max-height: 100%;
+    position: relative;
+    z-index: 1;
+}

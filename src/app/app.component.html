@@ -1,3 +1,32 @@
-<h1>
-  {{title}}
-</h1>
+  <md-sidenav-container>
+  <md-sidenav #sidenav mode="over">
+    <!-- sidenav content -->
+    <md-nav-list>
+      <md-list-item (click)="navigateTo(['register'])" *ngIf="!user">
+        <a md-line >Register</a>
+      </md-list-item>
+      <md-list-item (click)="navigateTo(['login'])" *ngIf="!user">
+        <a md-line >Login</a>
+      </md-list-item>
+      <md-list-item (click)="navigateTo(['home'])" *ngIf="user">
+        <a md-line >Home</a>
+      </md-list-item>
+      <md-list-item (click)="logout()" *ngIf="user">
+        <a md-line >Logout</a>
+      </md-list-item>
+    </md-nav-list>
+  </md-sidenav>
+
+ <md-toolbar color="primary">
+    <button class="app-icon-button" (click)="sidenav.toggle()">
+      <i class="material-icons app-toolbar-menu">menu</i>
+    </button>
+
+    {{title}}
+
+    <span class="app-toolbar-filler"></span>
+  </md-toolbar>
+  <div class="pageContent">
+    <router-outlet></router-outlet>
+  </div>
+</md-sidenav-container>
