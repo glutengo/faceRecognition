@@ -18,6 +18,7 @@ export class AuthService {
   }
 
   private init() {
+    // create observable and subject
     this.dataStore = { user: {}};
     this._user = <BehaviorSubject<any>>new BehaviorSubject({});
     this.user = this._user.asObservable();

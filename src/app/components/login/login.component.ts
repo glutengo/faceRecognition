@@ -1,7 +1,7 @@
 import { Component, ViewChild, OnInit, Inject, ChangeDetectorRef } from '@angular/core';
 import { Http } from '@angular/http';
-import { InterceptorService } from 'ng2-interceptors';
-import { AuthService } from '../auth.service';
+import { UserRestService } from '../../services/user-rest.service';
+import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 
 
@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
   password;
   loginMethod: string = 'camera';
 
-  constructor(private router: Router, private http: InterceptorService, private auth: AuthService, private ref: ChangeDetectorRef) { }
+  constructor(private router: Router, private userRestService: UserRestService, private auth: AuthService, private ref: ChangeDetectorRef) { }
 
   ngOnInit() {}
 
@@ -34,12 +34,11 @@ export class LoginComponent implements OnInit {
     }
 
     // perform http call
-    this.http.post('http://localhost:8081/login', {
+    this.userRestService.login( {
       username: this.username,
       password: this.password,
       image: this.imageUrl
     })
-      .map(response => response.json())
       .subscribe( data => {
           // on success set token and user data
           var token = data.token;

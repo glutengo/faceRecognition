@@ -1,7 +1,7 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from './auth.service';
-import { BlockUIService } from './block-ui.service';
+import { AuthService } from './services/auth.service';
+import { BlockUIService } from './services/block-ui.service';
 
 @Component({
   selector: 'app-root',

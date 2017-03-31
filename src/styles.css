@@ -101,3 +101,10 @@ md-card img, video {
     position: relative;
     z-index: 1;
 }
+
+md-toolbar button, md-toolbar button:focus {
+    background: none;
+    border: none;
+    color: white;
+    outline: none;
+}

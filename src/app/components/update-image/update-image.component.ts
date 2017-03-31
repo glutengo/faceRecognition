@@ -1,7 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { InterceptorService } from 'ng2-interceptors';
 import { MdSnackBar } from '@angular/material';
-
+import { UserRestService } from '../../services/user-rest.service';
 
 @Component({
   selector: 'app-update-image',
@@ -13,18 +12,20 @@ export class UpdateImageComponent implements OnInit {
   private imageUrl;
   private uploadMethod = 'camera';
 
-  constructor(private snackBar: MdSnackBar, private http: InterceptorService, private ref: ChangeDetectorRef) { }
+  constructor(private snackBar: MdSnackBar, private userRestService: UserRestService, private ref: ChangeDetectorRef) { }
 
   ngOnInit() {
   }
 
+  // update user image
   updateImage() {
-    this.http.post('http://localhost:8081/updateImage', {
+    this.userRestService.updateImage({
       image: this.imageUrl,
     })
       .subscribe( response => {
         delete this.imageUrl;
         this.snackBar.open('Image updated', 'Success', {duration: 5000});
+        this.ref.detectChanges();
       });
   }
 

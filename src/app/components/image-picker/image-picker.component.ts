@@ -20,6 +20,7 @@ export class ImagePickerComponent implements OnInit {
     var file    = $event.target.files[0];
     var reader  = new FileReader();
 
+    // get data from file input and emit as dataUrl
     reader.addEventListener("load", () => {
         var ctx = this.canvas.nativeElement.getContext('2d');
         this.imageUrl = reader.result;

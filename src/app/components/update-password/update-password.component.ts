@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MdSnackBar } from '@angular/material';
-import { InterceptorService } from 'ng2-interceptors';
+import { UserRestService } from '../../services/user-rest.service';
 
 @Component({
   selector: 'app-update-password',
@@ -13,17 +13,18 @@ export class UpdatePasswordComponent implements OnInit {
   private newPassword: string;
   private newPasswordConfirm: string;
 
-  constructor(private snackBar: MdSnackBar, private http: InterceptorService) { }
+  constructor(private snackBar: MdSnackBar, private userRestService: UserRestService) { }
 
   ngOnInit() {
   }
 
+  // update user password
   updatePassword() {
     if(this.newPassword !== this.newPasswordConfirm){
       this.snackBar.open('new password fields must match','Error',{duration: 5000});
     }
     else {
-        this.http.post('http://localhost:8081/updatePassword', {
+        this.userRestService.updatePassword({
           oldPassword: this.oldPassword,
           newPassword: this.newPassword
         })

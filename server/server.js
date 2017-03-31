@@ -118,6 +118,7 @@ app.post('/login', function(req, res){
         if(err || !user){
             res.statusCode = 403;
             res.json({message:'user not found'});
+            return;
         }
         // password login
         if(password) {

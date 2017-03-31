@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { InterceptorService } from 'ng2-interceptors';
-import { AuthService } from '../auth.service';
+import { UserRestService } from '../../services/user-rest.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -13,12 +13,11 @@ export class HomeComponent implements OnInit {
   private greeting = 'Hello, ';
   private user;
 
-  constructor(private http: InterceptorService, private auth: AuthService) { }
+  constructor(private userRestService: UserRestService, private auth: AuthService) { }
 
   ngOnInit() {
     // get sample data which is only accessible for logged in users (secure endpoint)
-    this.http.get('http://localhost:8081/home')
-      .map(response => response.json())
+    this.userRestService.home()
       .subscribe(data =>this.message = data.message);
 
     // get user from auth service. If no user is given, go to login  
