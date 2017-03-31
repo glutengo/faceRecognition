@@ -1,0 +1,16 @@
+.image-picker {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;    
+}
+
+md-icon {
+    position: absolute;
+    width: 250px;
+    left: 50%;
+    transform:translate(-50%);
+    font-size:250px;
+    z-index: 0;
+}

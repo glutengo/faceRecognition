@@ -1,0 +1,5 @@
+<div class="camera-snapshot" (click)="getCameraImage()">
+  <md-icon [class.small]="imageUrl">camera</md-icon>
+  <canvas width="500" height="380" #canvas hidden="true"></canvas>
+  <video [hidden]="imageUrl" width="500" height="380" autoplay #video [src]="videoUrl"></video>
+</div> 

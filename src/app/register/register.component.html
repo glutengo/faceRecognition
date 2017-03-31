@@ -1,0 +1,38 @@
+<h2>Register</h2>
+<md-input-container>
+  <input mdInput placeholder="Username"  [(ngModel)]="user.username">
+</md-input-container>
+<md-input-container>
+  <input mdInput placeholder="Password" type="password" [(ngModel)]="user.password">
+</md-input-container>
+<nav md-tab-nav-bar aria-label="weather navigation links">
+    <a md-tab-link
+        [class.active]="registerMethod === 'camera'"
+        (click)="registerMethod='camera'">
+        Camera
+    </a>
+    <a md-tab-link
+        [class.active]="registerMethod === 'upload'"
+        (click)="registerMethod='upload'">
+        Upload
+    </a>
+  </nav>
+<md-card class="login-method camera" [hidden]="registerMethod!=='camera'">
+    <md-card-content>
+        <img [hidden]="!imageUrl" [src]="imageUrl"/>	
+        <app-camera-snapshot [imageUrl]="imageUrl" (imageCreated)="imageChanged($event)"></app-camera-snapshot>
+    </md-card-content>
+</md-card>
+<md-card class="login-method upload" [hidden]="registerMethod!=='upload'">
+    <md-card-content>
+        <img [hidden]="!imageUrl" [src]="imageUrl"/>	
+        <app-image-picker [imageUrl]="imageUrl" (imagePicked)="imageChanged($event)"></app-image-picker>	
+    </md-card-content>
+</md-card>
+<div class="buttons">
+  <button md-raised-button color="primary" (click)="register()">Register</button>
+</div>
+<p>
+    Already got an account ? Go and <a [routerLink]="['/login']">Login</a>!
+</p>
+

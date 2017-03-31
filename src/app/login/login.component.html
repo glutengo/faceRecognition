@@ -1,0 +1,46 @@
+<h2>Login</h2>
+<md-input-container>
+  <input mdInput placeholder="Username"  [(ngModel)]="username">
+</md-input-container>
+<nav md-tab-nav-bar aria-label="weather navigation links">
+    <a md-tab-link
+        [class.active]="loginMethod === 'camera'"
+        (click)="loginMethod='camera'">
+        Camera
+    </a>
+    <a md-tab-link
+        [class.active]="loginMethod === 'upload'"
+        (click)="loginMethod='upload'">
+        Upload
+    </a>
+    <a md-tab-link
+        [class.active]="loginMethod === 'password'"
+        (click)="loginMethod='password'">
+      Password
+    </a>
+  </nav>
+<md-card class="login-method camera" [hidden]="loginMethod!=='camera'">
+    <md-card-content>
+        <img [hidden]="!imageUrl" [src]="imageUrl"/>	
+        <app-camera-snapshot [imageUrl]="imageUrl" (imageCreated)="imageChanged($event)"></app-camera-snapshot>
+    </md-card-content>
+</md-card>
+<md-card class="login-method upload" [hidden]="loginMethod!=='upload'">
+    <md-card-content>
+        <img [hidden]="!imageUrl" [src]="imageUrl"/>	
+        <app-image-picker [imageUrl]="imageUrl" (imagePicked)="imageChanged($event)"></app-image-picker>	
+    </md-card-content>
+</md-card>
+<md-card class="login-method password" [hidden]="loginMethod!=='password'">
+    <md-card-content>	
+        <md-input-container>
+        <input mdInput placeholder="Password" type="password"  [(ngModel)]="password">
+        </md-input-container>
+    </md-card-content>	
+</md-card>
+<div class="buttons">
+  <button md-raised-button color="primary" (click)="login()">Login</button>
+</div>
+<p>
+    Got no account ? Go and <a [routerLink]="['/register']">Register</a>!
+</p>

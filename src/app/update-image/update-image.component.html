@@ -1,0 +1,23 @@
+<md-card class="login-method">
+  <md-card-title>Update login image</md-card-title>
+  <nav md-tab-nav-bar aria-label="weather navigation links">
+    <a md-tab-link
+        [class.active]="uploadMethod === 'camera'"
+        (click)="uploadMethod='camera'">
+        Camera
+    </a>
+    <a md-tab-link
+        [class.active]="uploadMethod === 'upload'"
+        (click)="uploadMethod='upload'">
+        Upload
+    </a>
+  </nav>
+  <md-card-content>
+    <app-camera-snapshot [hidden]="uploadMethod !== 'camera'" [imageUrl]="imageUrl" (imageCreated)="imageChanged($event)"></app-camera-snapshot>
+    <app-image-picker [hidden]="uploadMethod !== 'upload'" [imageUrl]="imageUrl" (imagePicked)="imageChanged($event)"></app-image-picker>	
+     <img [hidden]="!imageUrl" [src]="imageUrl"/>	
+  </md-card-content>
+  <md-card-actions>
+    <button md-raised-button (click)="updateImage()" color="primary">Update image</button>
+  </md-card-actions>
+</md-card>
