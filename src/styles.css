@@ -32,7 +32,7 @@ md-card[hidden] {
     display: none;
 }
 
-md-card.login-method {
+md-card {
     text-align: center;
 }
 

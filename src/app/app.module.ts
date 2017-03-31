@@ -21,11 +21,12 @@ import { ImagePickerComponent } from './image-picker/image-picker.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UpdateImageComponent } from './update-image/update-image.component';
 import { UpdatePasswordComponent } from './update-password/update-password.component';
+import { BlockUIComponent } from './block-ui/block-ui.component';
+import { BlockUIService } from './block-ui.service';
 
-export function interceptorFactory(xhrBackend: XHRBackend, requestOptions: RequestOptions, authService, snackbar){
+export function interceptorFactory(xhrBackend: XHRBackend, requestOptions: RequestOptions, authService, snackbar, blockUI){
   let service = new InterceptorService(xhrBackend, requestOptions);
-  service.addInterceptor(new httpInterceptor(authService, snackbar));
-  // Add interceptors here with service.addInterceptor(interceptor)
+  service.addInterceptor(new httpInterceptor(authService, snackbar, blockUI));
   return service;
 }
 
@@ -38,7 +39,8 @@ export function interceptorFactory(xhrBackend: XHRBackend, requestOptions: Reque
     CameraSnapshotComponent,
     ImagePickerComponent,
     UpdateImageComponent,
-    UpdatePasswordComponent
+    UpdatePasswordComponent,
+    BlockUIComponent
   ],
   imports: [
     BrowserModule,
@@ -54,13 +56,12 @@ export function interceptorFactory(xhrBackend: XHRBackend, requestOptions: Reque
   ],
   providers: [
     AuthService,
+    BlockUIService,
     {
       provide: InterceptorService,
       useFactory: interceptorFactory,
-      deps: [XHRBackend, RequestOptions, AuthService, MdSnackBar]
+      deps: [XHRBackend, RequestOptions, AuthService, MdSnackBar, BlockUIService],
     }
-    /*provideInterceptorService([
-      httpInterceptor])*/
   ],
   bootstrap: [AppComponent]
 })

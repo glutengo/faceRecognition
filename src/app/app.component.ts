@@ -1,6 +1,7 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
+import { BlockUIService } from './block-ui.service';
 
 @Component({
   selector: 'app-root',
@@ -9,10 +10,11 @@ import { AuthService } from './auth.service';
 }) 
 export class AppComponent implements OnInit {
   @ViewChild('sidenav') sidenav;
+  @ViewChild('blockUI') blockUI;
   title = 'Face Recogintion';
   user;
 
-  constructor(private router: Router, private auth: AuthService) {}
+  constructor(private router: Router, private auth: AuthService, private blockUIService: BlockUIService) {}
 
   ngOnInit() {
     // get user from auth service
@@ -20,9 +22,10 @@ export class AppComponent implements OnInit {
 
     // subscribe to future changes on user
     this.auth.user.subscribe(data => {
-      console.log(data);
       this.user = data
     });
+
+    this.blockUIService.init(this.blockUI);
   }
 
   // naveigate to given route and toggle sidebar
