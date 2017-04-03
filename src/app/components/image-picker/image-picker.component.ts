@@ -8,7 +8,6 @@ import { Component, OnInit, EventEmitter, Output, Input, ViewChild } from '@angu
 export class ImagePickerComponent implements OnInit {
 
   @Input() imageUrl: string;
-  @ViewChild('canvas') private canvas;  
   @Output() imagePicked = new EventEmitter();
 
   constructor() { }
@@ -22,9 +21,16 @@ export class ImagePickerComponent implements OnInit {
 
     // get data from file input and emit as dataUrl
     reader.addEventListener("load", () => {
-        var ctx = this.canvas.nativeElement.getContext('2d');
         this.imageUrl = reader.result;
-        this.imagePicked.emit(this.imageUrl);
+        var img = new Image();
+        img.addEventListener("load", () => {
+            var scaleFactor = 1;
+            if(img.naturalWidth > 552) {
+                scaleFactor = 552 / img.naturalWidth; 
+            }
+            this.imagePicked.emit({imageUrl: this.imageUrl, scaleFactor: scaleFactor});
+        });
+        img.src = this.imageUrl;
     }, false);
 
     if (file) {

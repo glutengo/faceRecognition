@@ -26,6 +26,7 @@ import { httpInterceptor } from './services/http-interceptor.service';
 import { AuthService } from './services/auth.service';
 import { BlockUIService } from './services/block-ui.service';
 import { UserRestService } from './services/user-rest.service';
+import { FaceComponent } from './face/face.component';
 
 export function interceptorFactory(xhrBackend: XHRBackend, requestOptions: RequestOptions, authService, snackbar, blockUI){
   let service = new InterceptorService(xhrBackend, requestOptions);
@@ -43,7 +44,8 @@ export function interceptorFactory(xhrBackend: XHRBackend, requestOptions: Reque
     ImagePickerComponent,
     UpdateImageComponent,
     UpdatePasswordComponent,
-    BlockUIComponent
+    BlockUIComponent,
+    FaceComponent
   ],
   imports: [
     BrowserModule,

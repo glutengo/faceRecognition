@@ -19,24 +19,20 @@
       Password
     </a>
   </nav>
-<md-card class="login-method camera" [hidden]="loginMethod!=='camera'">
+<md-card class="login-method">
     <md-card-content>
-        <img [hidden]="!imageUrl" [src]="imageUrl"/>	
-        <app-camera-snapshot [imageUrl]="imageUrl" (imageCreated)="imageChanged($event)"></app-camera-snapshot>
+        <app-camera-snapshot *ngIf="loginMethod==='camera'" [imageUrl]="imageUrl" (imageCreated)="imageChanged($event)"></app-camera-snapshot>
+        <app-image-picker *ngIf="loginMethod==='upload'" [imageUrl]="imageUrl" (imagePicked)="imageChanged($event)"></app-image-picker>
+        <img *ngIf="imageUrl && loginMethod !== 'password'" [src]="imageUrl"/>	
+        <app-face [hidden]="!imageUrl || loginMethod === 'password'"
+                  (click)="login(face)"
+                  *ngFor="let face of faces"
+                  [face]=face
+                  [scaleFactor]="scaleFactor"></app-face>
+        <md-input-container *ngIf="loginMethod==='password'">
+          <input mdInput placeholder="Password" type="password" [(ngModel)]="password">	
+        </md-input-container>  
     </md-card-content>
-</md-card>
-<md-card class="login-method upload" [hidden]="loginMethod!=='upload'">
-    <md-card-content>
-        <img [hidden]="!imageUrl" [src]="imageUrl"/>	
-        <app-image-picker [imageUrl]="imageUrl" (imagePicked)="imageChanged($event)"></app-image-picker>	
-    </md-card-content>
-</md-card>
-<md-card class="login-method password" [hidden]="loginMethod!=='password'">
-    <md-card-content>	
-        <md-input-container>
-        <input mdInput placeholder="Password" type="password"  [(ngModel)]="password">
-        </md-input-container>
-    </md-card-content>	
 </md-card>
 <div class="buttons">
   <button md-raised-button color="primary" (click)="login()">Login</button>
