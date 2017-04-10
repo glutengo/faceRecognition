@@ -9,6 +9,7 @@ var jwt = require('jsonwebtoken');
 var config = require('./config');
 var bodyParser = require('body-parser');
 var User = require('./user');
+var faceApi = require('./faceApi');
 
 // connect database
 mongoose.connect(config.DATABASE);
@@ -32,69 +33,6 @@ app.use(function(req, res, next){
 });
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
-// MS API FUNCTIONS
-/**
- * Call MS face detection
- * 
- * @param {*} imageData image as dataURL
- * @param {*} onSuccess success callback
- * @param {*} onError error callback
- */
-function callMsDetect(imageData, onSuccess, onError) {
-    var msDetectOptions = {
-        host: config.FACE_API_HOST,
-        method: 'POST',
-        port: 443,
-        path: config.FACE_API_PATH_DETECT,
-        headers: {
-            'Content-Type': 'application/octet-stream',
-            'Content-Length': Buffer.byteLength(imageData),
-            'Ocp-Apim-Subscription-Key': config.FACE_API_KEY
-        }
-    };
-
-    var msDetectReq = https.request(msDetectOptions, function(msDetectResponse) {
-        msDetectResponse.setEncoding('utf8');
-        msDetectResponse.on('data', function(msDetectData){
-            onSuccess(JSON.parse(msDetectData));
-        });
-    });
-
-    msDetectReq.on('error', onError);
-    msDetectReq.write(imageData);
-    msDetectReq.end();
-}
-
-/**
- * 
- * @param {*} faceId1 face1 to compare
- * @param {*} faceId2 face2 to compare
- * @param {*} onSuccess success callback
- * @param {*} onError error callback
- */
-function callMsCompare(faceId1, faceId2, onSuccess, onError) {
-    var msVerifyOptions = {
-        host: config.FACE_API_HOST,
-        method: 'POST',
-        port: 443,
-        path: config.FACE_API_PATH_VERIFY,
-        headers: {
-            'Ocp-Apim-Subscription-Key': config.FACE_API_KEY
-        }
-    }
-
-    var msVerifyReq = https.request(msVerifyOptions, function(msVerifyResponse) {
-        msVerifyResponse.setEncoding('utf8');
-        msVerifyResponse.on('data', function(msVerifyData) {
-            onSuccess(JSON.parse(msVerifyData));
-        });
-    })
-
-    msVerifyReq.on('error', onError);
-    msVerifyReq.write(JSON.stringify({faceId1: faceId1, faceId2: faceId2}));
-    msVerifyReq.end();
-}
 
 // PUBLIC API ENDPOINTS
 
@@ -147,7 +85,7 @@ app.post('/login', function(req, res){
         }
         // faceId login
         else if(faceId) {
-            callMsCompare(user.faceId, faceId, 
+            faceApi.verify(user.faceId, faceId, 
                 function(msCompareData){
                     if(msCompareData.isIdentical && msCompareData.confidence >= config.FACE_API_CONFIDENCE_TRESHOLD){
                         //if faces match, create a token
@@ -181,13 +119,13 @@ app.post('/login', function(req, res){
             // image login
             if (imageData) {
                 // detect faces on the login image
-                callMsDetect(imageData, 
+                faceApi.detect(imageData, 
                     function(msDetectData) {
                         // check for the first face
                         // TODO: send error when more than one face is recognized and let the user pick one
                         if(msDetectData.length === 1){
                             // compare the recognized face to the saved one  
-                            callMsCompare(user.faceId, msDetectData[0].faceId, 
+                            faceApi.verify(user.faceId, msDetectData[0].faceId, 
                                 function(msCompareData){
                                     if(msCompareData.isIdentical && msCompareData.confidence >= config.FACE_API_CONFIDENCE_TRESHOLD){
                                         //if faces match, create a token
@@ -259,7 +197,7 @@ app.post('/register', function(req, res){
     // if image is given
     if(req.body.image) {
         // call face detection
-        callMsDetect(Buffer.from(req.body.image.split(",")[1], 'base64'),
+        faceApi.detect(Buffer.from(req.body.image.split(",")[1], 'base64'),
             function(msDetectData) {
                 // face will only be saved if only one face is recognized
                 // if no face, the user will be informed and the account will be created without a faceId anyways
@@ -435,7 +373,7 @@ app.post('/updateImage', function(req, res) {
             return;
         }
         // call face detection with new face
-        callMsDetect(Buffer.from(req.body.image.split(",")[1], 'base64'),
+        faceApi.detect(Buffer.from(req.body.image.split(",")[1], 'base64'),
             function(msDetectData) {
                 if(msDetectData.length === 1){
                     user.faceId = msDetectData[0].faceId;

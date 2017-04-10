@@ -1,5 +1,4 @@
 <div class="image-picker">
   <md-icon (click)="fileInput.click()" [class.small]="imageUrl">file_upload</md-icon>
-  <canvas width="500" height="380" #canvas hidden="true"></canvas>
   <input #fileInput type="file" hidden="true" (change)="imageDataChanged($event)">
 </div>
