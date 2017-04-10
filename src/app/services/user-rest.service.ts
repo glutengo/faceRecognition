@@ -29,6 +29,11 @@ export class UserRestService {
       .map(response => response.json());
   }
 
+  setFaceId(faceIdData) {
+    return this.http.post(this.baseUrl + 'setFaceId', faceIdData)
+      .map(response => response.json());
+  }
+
   home() {
     return this.http.get(this.baseUrl + 'home')
       .map(response => response.json());

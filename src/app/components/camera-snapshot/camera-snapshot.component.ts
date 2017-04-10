@@ -9,6 +9,7 @@ import { BlockUIService } from '../../services/block-ui.service';
 export class CameraSnapshotComponent implements OnInit {
 
   private mediaStream;
+  private recording : boolean = false;
   @Input() imageUrl: string;
   @Output() imageCreated = new EventEmitter();
   @ViewChild('video') private video;
@@ -23,28 +24,34 @@ export class CameraSnapshotComponent implements OnInit {
     // block UI and reset image
     this.blockUI.start();
     this.imageUrl = undefined;
-    this.imageCreated.emit(undefined);
+    this.imageCreated.emit({imageUrl: undefined});
 
     // request access to camera for video
     navigator.getUserMedia(
       {video:true},
       mediaStream => {
+        this.recording = true;
         this.mediaStream = mediaStream;
         this.video.nativeElement.src = window.URL.createObjectURL(mediaStream);
+        this.ref.detectChanges();
         setTimeout(() => {
           // create screenshot and emit as dataUrl
           var ctx = this.canvas.nativeElement.getContext('2d');
           ctx.drawImage(this.video.nativeElement, 0, 0, 500, 380);
           this.imageUrl = this.canvas.nativeElement.toDataURL()
-          this.imageCreated.emit(this.imageUrl);
+          this.imageCreated.emit({imageUrl: this.imageUrl});
           
           //stop video and blockUI
           this.mediaStream.getVideoTracks()[0].stop();
+          this.recording = false;
           this.blockUI.stop();
           this.ref.detectChanges();
         }, 3000);
       },
-      error => {});
+      error => {
+        this.recording = false;
+        this.blockUI.stop();
+      });
   }
 
 }
