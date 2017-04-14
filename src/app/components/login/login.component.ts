@@ -62,6 +62,7 @@ export class LoginComponent implements OnInit {
   imageChanged(data) {
     this.scaleFactor = data.scaleFactor;
     this.imageUrl = data.imageUrl;
+    this.faces = [];
     this.ref.detectChanges();
   }
 

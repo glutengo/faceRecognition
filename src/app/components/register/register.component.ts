@@ -57,6 +57,7 @@ export class RegisterComponent implements OnInit {
   imageChanged(data) {
     this.imageUrl = data.imageUrl;
     this.scaleFactor = data.scaleFactor;
+    this.faces = [];
     this.ref.detectChanges();
   }
 

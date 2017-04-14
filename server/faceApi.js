@@ -26,7 +26,13 @@ module.exports = {
         var msDetectReq = https.request(msDetectOptions, function(msDetectResponse) {
             msDetectResponse.setEncoding('utf8');
             msDetectResponse.on('data', function(msDetectData){
-                onSuccess(JSON.parse(msDetectData));
+                var data = JSON.parse(msDetectData);
+                if(msDetectData.error){
+                    onError(data);
+                }
+                else {
+                    onSuccess(data);
+                }
             });
         });
 
