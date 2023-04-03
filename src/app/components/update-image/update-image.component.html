@@ -15,7 +15,13 @@
   <md-card-content>
     <app-camera-snapshot [hidden]="uploadMethod !== 'camera'" [imageUrl]="imageUrl" (imageCreated)="imageChanged($event)"></app-camera-snapshot>
     <app-image-picker [hidden]="uploadMethod !== 'upload'" [imageUrl]="imageUrl" (imagePicked)="imageChanged($event)"></app-image-picker>	
-     <img [hidden]="!imageUrl" [src]="imageUrl"/>	
+    <img #image [hidden]="!imageUrl" [src]="imageUrl"/>	
+    <app-face *ngFor="let face of faces"
+              (click)="setFaceId(face)"
+              [face]="face"
+              [scaleFactor]="scaleFactor"
+              [xOffset]="image.offsetLeft"
+              ></app-face> 
   </md-card-content>
   <md-card-actions>
     <button md-raised-button (click)="updateImage()" color="primary">Update image</button>
